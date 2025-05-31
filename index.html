@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pato Pagina</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            background: white;
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .container {
+            text-align: center;
+            animation: fadeIn 1s ease-out;
+        }
+
+        .duck {
+            font-size: 4rem;
+            margin-bottom: 60px;
+            animation: bounce 2s infinite;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            position: relative;
+            z-index: 10;
+        }
+
+        .speech-bubble {
+            position: absolute;
+            top: -60px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #333;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 1rem;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+            white-space: nowrap;
+        }
+
+        .speech-bubble::after {
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            border: 8px solid transparent;
+            border-top-color: #333;
+        }
+
+        .speech-bubble.show {
+            opacity: 1;
+        }
+
+        .greeting-bubble {
+            position: absolute;
+            top: -60px;
+            left: 30%;
+            transform: translateX(-50%);
+            background: #4a90e2;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 25px;
+            font-size: 1rem;
+            font-weight: 300;
+            animation: slideDown 1s ease-out 0.5s both;
+            white-space: nowrap;
+        }
+
+        .greeting-bubble::after {
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            border: 10px solid transparent;
+            border-top-color: #4a90e2;
+        }
+
+        .duck:hover {
+            transform: scale(1.1);
+        }
+
+        .greeting {
+            display: none;
+        }
+
+        .options {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+            animation: slideUp 1s ease-out 1s both;
+        }
+
+        .option-button {
+            background: linear-gradient(45deg, #4ecdc4, #44a08d);
+            color: white;
+            border: none;
+            padding: 15px 25px;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .option-button:nth-child(2) {
+            background: linear-gradient(45deg, #4ecdc4, #44a08d);
+        }
+
+        .option-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .option-button:active {
+            transform: translateY(-1px);
+        }
+
+        .following-duck {
+            position: fixed;
+            font-size: 2rem;
+            pointer-events: none;
+            z-index: 1000;
+            transition: all 0.1s ease-out;
+            animation: wiggle 0.5s ease-in-out infinite alternate;
+        }
+
+        .meme-container {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.9);
+            padding: 20px;
+            border-radius: 15px;
+            z-index: 1000;
+            display: none;
+            max-width: 90%;
+            max-height: 90%;
+        }
+
+        .meme-container img {
+            max-width: 100%;
+            max-height: 80vh;
+            border-radius: 10px;
+        }
+
+        .close-button {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            background: #ff4757;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        @keyframes bounce {
+            0%,
+            20%,
+            50%,
+            80%,
+            100% {
+                transform: translateY(0);
+            }
+
+            40% {
+                transform: translateY(-10px);
+            }
+
+            60% {
+                transform: translateY(-5px);
+            }
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes wiggle {
+            0% {
+                transform: rotate(-5deg);
+            }
+
+            100% {
+                transform: rotate(5deg);
+            }
+        }
+
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: rgba(0, 0, 0, 0.1);
+            border-radius: 50%;
+            animation: float 3s infinite linear;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 1;
+            }
+
+            100% {
+                transform: translateY(-100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 30px 20px;
+                margin: 20px;
+            }
+
+            .options {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .option-button {
+                width: 200px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="particles" id="particles"></div>
+
+    <div class="container">
+        <div class="duck">
+            <img src="https://cdn3.emoji.gg/emojis/33078-duckwalk.gif" width="64px" height="64px" alt="DuckWalk">
+            <div class="greeting-bubble">Como posso te ajudar?</div>
+            <div class="speech-bubble" id="speechBubble">Ok!</div>
+        </div>
+        <div class="options">
+            <button class="option-button" onclick="duckSayOkThen(followMouse)">Segue meu mouse</button>
+            <button class="option-button" onclick="duckSayOkThen(showMeme)">Um meme</button>
+            <button class="option-button" onclick="duckSayOkThen(tellJoke)">Uma Piada brega</button>
+        </div>
+    </div>
+
+    <div class="meme-container" id="memeContainer">
+        <button class="close-button" onclick="closeMeme()">&times;</button>
+        <img src="" alt="Meme">
+    </div>
+
+    <script>
+        let followingMode = false;
+        let followingDuck = null;
+
+        function duckSayOkThen(actionFunction) {
+            const speechBubble = document.getElementById('speechBubble');
+            const duck = document.querySelector('.duck');
+
+            // Play duck sound (if you add one later)
+            const audio = new Audio('sound.mp3');
+            audio.play().catch(e => console.log('Could not play sound:', e));
+
+            speechBubble.classList.add('show');
+            duck.style.transform = 'scale(1.1)';
+
+            const greeting = document.querySelector('.greeting-bubble');
+            greeting.style.display = 'none';
+
+            setTimeout(() => {
+                speechBubble.classList.remove('show');
+                duck.style.transform = '';
+                actionFunction();
+            }, 500);
+        }
+
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            for (let i = 0; i < 20; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 3 + 's';
+                particle.style.animationDuration = (Math.random() * 3 + 2) + 's';
+                particlesContainer.appendChild(particle);
+            }
+        }
+
+        function followMouse() {
+            const mainDuck = document.querySelector('.duck');
+            const container = document.querySelector('.container');
+            const greeting = document.querySelector('.greeting-bubble');
+            container.style.display = 'none';
+
+            if (followingMode) {
+                followingMode = false;
+                if (followingDuck) {
+                    followingDuck.remove();
+                    followingDuck = null;
+                }
+                // Remove click listener for quack sound
+                document.removeEventListener('click', playQuackSound);
+                // Show the main duck and container again
+                container.style.display = 'block';
+                greeting.style.display = 'block';
+                return;
+            }
+
+            followingMode = true;
+
+            followingDuck = document.createElement('div');
+            followingDuck.className = 'following-duck';
+
+            // Replace textContent with an <img> tag
+            const duckImage = document.createElement('img');
+            duckImage.src = 'Duck_Jump.gif';
+            duckImage.style.width = '100px'; // Adjust size
+            followingDuck.appendChild(duckImage);
+
+            document.body.appendChild(followingDuck);
+
+
+            // Add click listener for quack sound during following mode
+            document.addEventListener('click', playQuackSound);
+
+            document.addEventListener('mousemove', function (e) {
+                if (followingMode && followingDuck) {
+                    followingDuck.style.left = (e.clientX - 20) + 'px';
+                    followingDuck.style.top = (e.clientY - 20) + 'px';
+                }
+            });
+
+            setTimeout(() => {
+                if (followingMode) {
+                    followMouse();
+                }
+            }, 5000);
+        }
+
+        // Function to play quack sound
+        function playQuackSound() {
+            const quackAudio = new Audio('sound.mp3');
+            quackAudio.play().catch(e => console.log('Could not play quack sound:', e));
+        }
+
+        function showMeme() {
+            const memeContainer = document.getElementById('memeContainer');
+            const memeImg = memeContainer.querySelector('img');
+
+            // Replace these with your meme image URLs
+            const memes = [
+                'honk.png',
+                'https://m.media-amazon.com/images/I/31aeWWwLWbL._AC_UF1000,1000_QL80_.jpg',
+            ];
+
+            const randomMeme = memes[Math.floor(Math.random() * memes.length)];
+            memeImg.src = randomMeme;
+            memeContainer.style.display = 'block';
+        }
+
+        function closeMeme() {
+            const memeContainer = document.getElementById('memeContainer');
+            memeContainer.style.display = 'none';
+        }
+
+        document.addEventListener('click', function (e) {
+            const memeContainer = document.getElementById('memeContainer');
+            if (memeContainer.style.display === 'block' && !memeContainer.contains(e.target)) {
+                closeMeme();
+            }
+        });
+
+        createParticles();
+
+        document.querySelector('.duck').addEventListener('click', function () {
+            this.style.transform = 'scale(1.2) rotate(360deg)';
+            setTimeout(() => {
+                this.style.transform = '';
+            }, 300);
+        });
+        
+        function tellJoke() {
+            const jokes = [
+                "O que o pato disse para a pata? Vem quá!",
+            ];
+
+            const randomJoke = jokes[Math.floor(Math.random() * jokes.length)];
+
+            const speechBubble = document.getElementById('speechBubble');
+            speechBubble.textContent = randomJoke;
+            speechBubble.classList.add('show');
+
+            setTimeout(() => {
+                speechBubble.classList.remove('show');
+                speechBubble.textContent = 'Ok!';
+            }, 4000); // Exibe a piada por 4 segundos
+        }
+    </script>
+</body>
+
+</html>
