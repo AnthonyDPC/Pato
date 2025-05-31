@@ -323,7 +323,7 @@
             const duck = document.querySelector('.duck');
 
             // Play duck sound (if you add one later)
-            const audio = new Audio('https://pixabay.com/sound-effects/duck-quacking-37392/');
+            const audio = new Audio('https://raw.githubusercontent.com/AnthonyDPC/Pato/main/sound.mp3');
             audio.play().catch(e => console.log('Could not play sound:', e));
 
             speechBubble.classList.add('show');
@@ -404,7 +404,7 @@
 
         // Function to play quack sound
         function playQuackSound() {
-            const quackAudio = new Audio('sound.mp3');
+            const quackAudio = new Audio('https://raw.githubusercontent.com/AnthonyDPC/Pato/main/sound.mp3');
             quackAudio.play().catch(e => console.log('Could not play quack sound:', e));
         }
 
