@@ -323,7 +323,7 @@
             const duck = document.querySelector('.duck');
 
             // Play duck sound (if you add one later)
-            const audio = new Audio('sound.mp3');
+            const audio = new Audio('https://pixabay.com/sound-effects/duck-quacking-37392/');
             audio.play().catch(e => console.log('Could not play sound:', e));
 
             speechBubble.classList.add('show');
@@ -447,6 +447,7 @@
         function tellJoke() {
             const jokes = [
                 "O que o pato disse para a pata? Vem quá!",
+                "Porque o pato não digita? Porque ele não tem mãos!",
             ];
 
             const randomJoke = jokes[Math.floor(Math.random() * jokes.length)];
