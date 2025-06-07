@@ -118,6 +118,7 @@
             container.style.display = 'none';
 
             if (followingMode) {
+                // Exit follow mode
                 followingMode = false;
                 if (followingDuck) {
                     followingDuck.remove();
@@ -126,19 +127,29 @@
                 document.removeEventListener('click', playQuackSound);
                 container.style.display = 'block';
                 greeting.style.display = 'block';
-                greeting_crocodile.style.display = 'block';
+                document.body.style.background = 'white'; // Reset background
                 return;
             }
 
+            // Enter follow mode
             followingMode = true;
 
+            // Set character-specific background
+            const backgroundImage = currentCharacter === 'duck'
+                ? 'url("backg_duck.png")'
+                : 'url("backg_croc.png")';
+
+            document.body.style.background = `${backgroundImage} no-repeat center center fixed`;
+            document.body.style.backgroundSize = 'cover';
+
+            // Create the following character
             followingDuck = document.createElement('div');
             followingDuck.className = 'following-duck';
 
             const characterImage = document.createElement('img');
             characterImage.src = currentCharacter === 'duck'
                 ? 'Duck_Jump.gif'
-                : 'https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExd3YwdmdxNDk2d2Z2MWx2dmw3YmpvanR3MXczc3Vqa3Jnbnl0bnJ0MiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/HOhXhNm3YMb9EAZK3i/giphy.gif';
+                : 'crocodile.gif'; // Add a crocodile GIF if needed
             characterImage.style.width = '100px';
             followingDuck.appendChild(characterImage);
 
@@ -154,12 +165,9 @@
             });
 
             setTimeout(() => {
-                if (followingMode) {
-                    followMouse();
-                }
+                if (followingMode) followMouse(); // Loop to re-enable follow mode
             }, 5000);
         }
-
         // Function to play quack sound
         function playQuackSound() {
             let soundFile;
